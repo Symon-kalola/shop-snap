@@ -12,12 +12,10 @@ function Aside() {
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     changeData((prev) => {
       return { ...prev, [name]: value };
     });
   };
- 
 
   // functions for changing the left below text for shop and products when searching
 
@@ -35,9 +33,9 @@ function Aside() {
                 className="form-select form-select-sm"
                 aria-label=".form-select-sm example"
                 defaultValue={"Product-Name"}>
-                <option value="band">Product-Name</option>
-                <option value="band">Brand</option>
-                <option value="code">Code</option>
+                <option value="Product Name">Product-Name</option>
+                <option value="Brand">Brand</option>
+                <option value="Code">Code</option>
               </select>
             </span>
           </div>
@@ -65,14 +63,14 @@ function Aside() {
             className="me-2"
             aria-label="Search"
           />
-          <Button variant="outline-success" className="my-2 btn-sm">
+          <Button variant="outline-primary" className="my-2 btn-sm">
             Search
           </Button>
         </Form>
       </div>
 
       <div className="pt-4">
-        <h5 className="badge bg-danger txt-white">Note</h5>
+        <h5 className="badge bg-primary txt-white">Your Search information</h5>
         <p>
           You are currently searching using
           <b> {searchData.key} </b> in

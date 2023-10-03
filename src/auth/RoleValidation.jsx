@@ -1,7 +1,7 @@
 function Role() {
   let user = JSON.parse(localStorage.getItem("user-info"));
   if (user.role === "shop") {
-    return "/" + user.id + "/shops/";
+    return "/" + user.id + "/";
   } else {
     return "/";
   }

@@ -24,6 +24,8 @@ function Login() {
   //  end of redirection
 
   async function InitLogin() {
+  
+    window.alert("Authenticating....\nclick ok to continue ");
     let item = { email, pass };
     let result = await fetch("http://localhost:8000/api/login", {
       method: "POST",

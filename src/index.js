@@ -4,6 +4,9 @@ import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import "./index.css";
 import "fontawesome/css/all.css";
+import "js/anim.js";
+import "js/jquery-3.6.0.min.js";
+
 
 import reportWebVitals from "./reportWebVitals";
 

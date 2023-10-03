@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 
-function Header() {
+function ManNav() {
   // getting data from the local storage of logged in user
   let user = JSON.parse(localStorage.getItem("user-info"));
   const navigate = useNavigate();
@@ -22,20 +22,7 @@ function Header() {
               </h4>
             </Link>
           </Navbar.Brand>
-          <div className=" d-flex">
-            <Nav.Link className="mx-2 " href="/">
-              <span className="fa fa-home"></span> Home
-            </Nav.Link>
-            <Nav.Link className="mx-3" href="/products">
-              <span className="fa fa-shopping-cart"></span> Products
-            </Nav.Link>
-            <Nav.Link className="mx-3 text-primary" href="/shops">
-              <span className="fa fa-store"></span> Shops
-            </Nav.Link>
-            <Nav.Link className="mx-3" href="/shops">
-              <span className="fa fa-search"></span> Search
-            </Nav.Link>
-          </div>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto m-3 "></Nav>
@@ -63,4 +50,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default ManNav;
