@@ -1,170 +1,194 @@
-import { Container, Row } from "react-bootstrap";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import AOS from "aos";
-import React from "react";
-import ShopViewModal from "../components/modals/ShopViewModal";
+import Modal from "react-bootstrap/Modal";
+import { Link } from "react-router-dom";
+import Gallery from "../../generalComponents/Gallery";
+import React, { useEffect } from "react";
 
 function Shops() {
   useEffect(() => {
     AOS.init({ duration: 3000 });
   }, []);
-  const [modalShow, setModalShow] = React.useState(false);
+  // showing the Shops
+  const [shops, setShops] = useState([]);
+  useEffect(() => {
+    async function getdata() {
+      let result = await fetch("http://127.0.0.1:8000/api/getshops");
+      result = await result.json();
+      setShops(result);
+    }
+    getdata();
+  }, []);
+
+  // shops shown
+  const [modalShow, setModalShow] = useState(1);
+  function updateTogle(id) {
+    setModalShow(id);
+  }
   return (
-    <Container fluid>
-      <Row data-aos="zoom-in">
-        <div className="col-md-4 mt-1">
-          <Link
-            toggle="tooltip"
-            data-placement="top"
-            title="Click to view shop details"
-            onClick={() => setModalShow(true)}
-            className="text-decoration-none">
+    <>
+      <div className="col-md-7 " data-aos="zoom-in">
+        <Modal.Body
+          className="shadow"
+          style={{
+            background: "linear-gradient(90deg,white,azure) ",
+            marginTop: "20px",
+          }}>
+          {shops.map((shop) => (
             <div
-              className="card border-success mb-3"
-              style={{ maxWidth: "100%", maxHeight: "" }}>
-              <div className="card-header">
+              className="card mt-4 shadow-sm"
+              style={{ height: "80%", marginTop: "-20px" }}>
+              <div className="d-flex justify-content-between">
+                {" "}
+                <h4 className="text-danger p-2">{shop.name}</h4>
+              </div>
+
+              <a
+                toggle="tooltip"
+                data-placement="top"
+                title="clict to view image"
+                target="_blank"
+                rel="noreferrer"
+                href={"http://127.0.0.1:8000/storage/" + shop.profile}>
+                {" "}
                 <img
-                  src="images/Chipiku.jpg"
-                  className="card-img-top"
+                  src={"http://127.0.0.1:8000/storage/" + shop.profile}
                   alt="..."
+                  style={{ width: "100%", height: "auto" }}
+                />
+              </a>
+
+              <ul className="nav nav-tabs mb-2 " id="myTab" role="tablist">
+                <li className="nav-item">
+                  <a
+                    className={
+                      modalShow === 1 ? "nav-link active" : "nav-link "
+                    }
+                    id="now-adverts-tab"
+                    data-toggle="tab"
+                    href="#desc"
+                    role="tab"
+                    aria-controls="home"
+                    aria-selected="true"
+                    onClick={() => updateTogle(1)}>
+                    Description{" "}
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className={
+                      modalShow === 2 ? " nav-link active" : " nav-link "
+                    }
+                    id="pending-adverts-tab"
+                    data-toggle="tab"
+                    href="#details"
+                    role="tab"
+                    aria-controls="profile"
+                    aria-selected="false"
+                    onClick={() => updateTogle(2)}>
+                    Details
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className={
+                      modalShow === 3 ? " nav-link active" : " nav-link "
+                    }
+                    id="pending-adverts-tab"
+                    data-toggle="tab"
+                    href="#location"
+                    role="tab"
+                    aria-controls="profile"
+                    aria-selected="false"
+                    onClick={() => updateTogle(3)}>
+                    location
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
+                    className={
+                      modalShow === 4 ? " nav-link active" : " nav-link "
+                    }
+                    id="pending-adverts-tab"
+                    data-toggle="tab"
+                    href="#gallery"
+                    role="tab"
+                    aria-controls="profile"
+                    aria-selected="false"
+                    onClick={() => updateTogle(4)}>
+                    Gallery
+                  </a>
+                </li>
+              </ul>
+              {/* shop detail pen start */}
+              <div className={modalShow === 1 ? "d-block" : "d-none"}>
+                {shop.description}
+              </div>
+              {/* desc end */}
+              {/* the location */}
+              <div
+                style={{ height: "47vh", width: "100%" }}
+                className={modalShow === 3 ? "d-block" : "d-none"}>
+                <img
+                  src="/images/prod/map2.jpg"
+                  alt="..."
+                  style={{ height: "100%", width: "100%", objectFit: "cover" }}
                 />
               </div>
-              <div className="card-body text-secondary">
-                <h5 className="card-title d-flex justify-content-center text-success">
-                  Chipiku Stores
-                </h5>
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
-          </Link>
-        </div>
+              {/* location  */}
+              {/* the gallery */}
 
-        <div className="col-md-4 mt-1">
-          <Link
-            onClick={() => setModalShow(true)}
-            className="text-decoration-none">
-            <div
-              className="card border-danger mb-3"
-              style={{ maxWidth: "100%", maxHeight: "" }}>
-              <div className="card-header">
-                <img src="images/sho.jpg" className="card-img-top" alt="..." />
-              </div>
-              <div className="card-body text-secondary">
-                <h5 className="card-title d-flex justify-content-center text-danger">
-                  ShopRite
-                </h5>
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
-          </Link>
-          <ShopViewModal show={modalShow} onHide={() => setModalShow(false)} />
-        </div>
-
-        <div className="col-md-4 mt-1">
-          <Link
-            onClick={() => setModalShow(true)}
-            className="text-decoration-none">
-            <div
-              className="card border-success mb-3"
-              style={{ maxWidth: "100%", maxHeight: "" }}>
-              <div className="card-header">
-                <img src="images/sana.png" className="card-img-top" alt="..." />
-              </div>
-              <div className="card-body text-secondary">
-                <h5 className="card-title d-flex justify-content-center text-success">
-                  Sana Cash & Carry
-                </h5>
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
-          </Link>
-        </div>
-      </Row>
-      <Row data-aos="fade-up">
-        <div className="col-md-4 mt-1">
-          <Link
-            onClick={() => setModalShow(true)}
-            className="text-decoration-none">
-            <div
-              className="card border-success mb-3"
-              style={{ maxWidth: "100%", maxHeight: "" }}>
-              <div className="card-header">
-                <img
-                  src="images/Chipiku.jpg"
-                  className="card-img-top"
-                  alt="..."
+              <div className={modalShow === 4 ? "d-block" : "d-none"}>
+                <Gallery
+                  image2={shop.image2}
+                  image1={shop.image1}
+                  image3={shop.image3}
                 />
               </div>
-              <div className="card-body text-secondary">
-                <h5 className="card-title d-flex justify-content-center text-success">
-                  Chipiku Stores
-                </h5>
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
-          </Link>
-        </div>
 
-        <div className="col-md-4 mt-1">
-          <Link
-            onClick={() => setModalShow(true)}
-            className="text-decoration-none">
-            <div
-              className="card border-danger mb-3"
-              style={{ maxWidth: "100%", maxHeight: "" }}>
-              <div className="card-header">
-                <img src="images/sho.jpg" className="card-img-top" alt="..." />
-              </div>
-              <div className="card-body text-secondary">
-                <h5 className="card-title d-flex justify-content-center text-danger">
-                  ShopRite
-                </h5>
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
-          </Link>
-        </div>
+              {/* end of gallery */}
 
-        <div className="col-md-4 mt-1">
-          <Link
-            onClick={() => setModalShow(true)}
-            className="text-decoration-none">
-            <div
-              className="card border-success mb-3"
-              style={{ maxWidth: "100%", maxHeight: "" }}>
-              <div className="card-header">
-                <img src="images/sana.png" className="card-img-top" alt="..." />
-              </div>
-              <div className="card-body text-secondary">
-                <h5 className="card-title d-flex justify-content-center text-success">
-                  Sana Cash & Carry
-                </h5>
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
+              {/* shop detail start */}
+
+              <div className={modalShow === 2 ? "d-block p-2" : "d-none"}>
+                <h6>
+                  location:{" "}
+                  <span className="text-success">
+                    {"Blantyre " + shop.branch}
+                  </span>
+                </h6>
+                <h6 className="mt-2">
+                  Openning hours:{" "}
+                  <span className="text-success">{shop.openHrs}</span>
+                </h6>
+                <h6 className="mt-2">
+                  Closing hours:{" "}
+                  <span className="text-success">{shop.closeHrs}</span>
+                </h6>
+                <div className={modalShow === 2 ? "d-block" : "d-none"}>
+                  <h6>
+                    Contact Details: <span className="text-success"></span>
+                    <br />
+                    <span>
+                      <b>Phone: </b>
+                      <span className="text-success">0882751460</span>
+                    </span>
+                    <br />
+                    <span>
+                      <b>Email: </b>
+                      <span className="text-success">
+                        <Link>{}</Link>
+                      </span>
+                    </span>
+                    <br />
+                  </h6>
+                </div>
               </div>
             </div>
-          </Link>
-        </div>
-      </Row>
-    </Container>
+          ))}
+        </Modal.Body>
+      </div>
+    </>
   );
 }
 export default Shops;

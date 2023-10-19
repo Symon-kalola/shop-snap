@@ -1,5 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import AOS from "aos";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Gallery from "../../generalComponents/Gallery";
@@ -8,6 +9,9 @@ import EditShop from "./modals/ShopEditModle";
 import React, { useEffect } from "react";
 
 function Shop() {
+  useEffect(() => {
+    AOS.init({ duration: 3000 });
+  }, []);
   let user = JSON.parse(localStorage.getItem("user-info"));
   const [shops, setShops] = useState([]);
   useEffect(() => {
@@ -29,7 +33,7 @@ function Shop() {
 
   return (
     <>
-      <div className="col-md-7 ">
+      <div className="col-md-7 " data-aos="zoom-in">
         <Modal.Body
           className="shadow"
           style={{

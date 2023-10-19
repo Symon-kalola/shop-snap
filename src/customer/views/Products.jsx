@@ -1,10 +1,26 @@
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import { useEffect, useState } from "react";
 import React from "react";
 
 import ProductViewModal from "../components/modals/ProductViewModal";
 function Products() {
+  // getting products from database
+
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    async function getdata() {
+      let result = await fetch("http://127.0.0.1:8000/api/getproducts");
+      result = await result.json();
+      setProducts(result);
+    }
+    getdata();
+  }, []);
+  console.log(products);
+
+  //  data set
+
   const [modalShow, setModalShow] = React.useState(false);
   return (
     <div className="container fluid " style={{ height: "100%" }}>
@@ -30,137 +46,49 @@ function Products() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div className="d-flex  justify-content-center">
-                <img
-                  style={{ maxHeight: "50px", maxWidth: "auto" }}
-                  src="images/prod/sh.jpg"
-                  className="rounded"
-                  alt="..."
-                />
-              </div>
-            </td>
-            <td>Sneaker</td>
-            <td>Adidas</td>
-            <td>Sports shoe for all activities</td>
-            <td>
-              <Link to={"/shops"}>ShopRite</Link>
-            </td>
-            <td>MK1000</td>
-            <td>100</td>
+          {products.map((product) => (
+            <tr>
+              <td>
+                <div>
+                  <a
+                    toggle="tooltip"
+                    data-placement="top"
+                    title="clict to view image"
+                    target="_blank"
+                    rel="noreferrer"
+                    href={"http://127.0.0.1:8000/storage/" + product.profile}>
+                    <img
+                      style={{ maxHeight: "50px", maxWidth: "auto" }}
+                      src={"http://127.0.0.1:8000/storage/" + product.profile}
+                      className="rounded"
+                      alt="..."
+                    />
+                  </a>
+                </div>
+              </td>
+              <td>{product.name}</td>
+              <td>{product.brand}</td>
+              <td>{product.description}</td>
+              <td>
+                <Link to={"/shops"}>ShopRite</Link>
+              </td>
+              <td>{"MK " + product.price}</td>
+              <td>{product.quantity}</td>
 
-            <td>
-              <Button
-                variant="outline-primary"
-                className="my-2 btn-sm"
-                onClick={() => setModalShow(true)}>
-                view
-              </Button>
-              <ProductViewModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div className="d-flex  justify-content-center">
-                <img
-                  style={{ maxHeight: "50px", maxWidth: "auto" }}
-                  src="images/prod/sh2.jpg"
-                  className="rounded"
-                  alt="..."
+              <td>
+                <Button
+                  variant="outline-primary"
+                  className="my-2 btn-sm"
+                  onClick={() => setModalShow(true)}>
+                  view
+                </Button>
+                <ProductViewModal
+                  show={modalShow}
+                  onHide={() => setModalShow(false)}
                 />
-              </div>
-            </td>
-            <td>Sneaker</td>
-            <td>Adidas</td>
-            <td>Sports shoe for all activities</td>
-            <td>
-              <Link>ShopRite</Link>
-            </td>
-            <td>MK1000</td>
-            <td>100</td>
-            <td>
-              <Button
-                variant="outline-primary"
-                className="my-2 btn-sm"
-                onClick={() => setModalShow(true)}>
-                view
-              </Button>
-              <ProductViewModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-              />
-            </td>
-          </tr>{" "}
-          <tr>
-            <td>
-              <div className="d-flex  justify-content-center">
-                <img
-                  style={{ maxHeight: "50px", maxWidth: "auto" }}
-                  src="images/prod/p.jpg"
-                  className="rounded"
-                  alt="..."
-                />
-              </div>
-            </td>
-            <td>Sneaker</td>
-            <td>Adidas</td>
-            <td>Sports shoe for all activities</td>
-            <td>
-              <Link>ShopRite</Link>
-            </td>
-            <td>MK1000</td>
-            <td>100</td>
-
-            <td>
-              <Button
-                variant="outline-primary"
-                className="my-2 btn-sm"
-                onClick={() => setModalShow(true)}>
-                view
-              </Button>
-              <ProductViewModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-              />
-            </td>
-          </tr>{" "}
-          <tr>
-            <td>
-              <div className="d-flex  justify-content-center">
-                <img
-                  style={{ maxHeight: "50px", maxWidth: "auto" }}
-                  src="images/prod/su.jpg"
-                  className="rounded"
-                  alt="..."
-                />
-              </div>
-            </td>
-            <td>Sneaker</td>
-            <td>Adidas</td>
-            <td>Sports shoe for all activities</td>
-            <td>
-              <Link>ShopRite</Link>
-            </td>
-            <td>MK1000</td>
-            <td>100</td>
-
-            <td>
-              <Button
-                variant="outline-primary"
-                className="my-2 btn-sm"
-                onClick={() => setModalShow(true)}>
-                view
-              </Button>
-              <ProductViewModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-              />
-            </td>
-          </tr>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

@@ -107,10 +107,7 @@ function ShopViewModal(props) {
             </ul>
             {/* shop detail pen start */}
             <div className={modalShow === 1 ? "d-block" : "d-none"}>
-              Here we will have a description of the product it will contain a
-              specified number of words which will be used to describe the
-              product which is displayed, ensure that thwe word do dot outflow
-              the available space so please controll the input
+              {props.desc}
             </div>
             {/* desc end */}
             {/* the location */}
@@ -127,8 +124,11 @@ function ShopViewModal(props) {
             {/* the gallery */}
 
             <div className={modalShow === 4 ? "d-block" : "d-none"}>
-              <Gallery />
-              <Gallery />
+              <Gallery
+                image1={props.im1}
+                image2={props.im2}
+                image3={props.im3}
+              />
             </div>
 
             {/* end of gallery */}
@@ -137,13 +137,12 @@ function ShopViewModal(props) {
 
             <div className={modalShow === 2 ? "d-block" : "d-none"}>
               <h6>
-                location:{" "}
-                <span className="text-success">Brantyre Chitawila</span>
+                location: <span className="text-success">{props.branch}</span>
               </h6>
               <h6 className="mt-2">
                 Openning hours:{" "}
                 <span className="text-success">
-                  8am - 8pm/ monday to friday
+                  {props.opnH + "am to" + props.cloH + "pm"}
                 </span>
               </h6>
               <div className={modalShow === 2 ? "d-block" : "d-none"}>

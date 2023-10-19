@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { Link } from "react-router-dom";
+
 import Button from "react-bootstrap/Button";
 import EditProduct from "./modals/EditProductModle";
 import ConfirmDelete from "./modals/ConfirmDeleteModle";
@@ -21,6 +21,8 @@ function Product() {
     getdata();
   }, []);
 
+ 
+
   const [modalShow, setModalShow] = React.useState(false);
   const [modalShowDel, setModalShowDel] = React.useState(false);
   return (
@@ -37,7 +39,6 @@ function Product() {
             <th className="text-success">Name</th>
             <th className="text-success">Brand</th>
             <th className="text-success">Description</th>
-            <th className="text-success">Shop</th>
             <th className="text-success">Price</th>
             <th className="text-success">Stock</th>
             <th className="text-success ">Actions</th>
@@ -68,10 +69,6 @@ function Product() {
               <td>{product.brand}</td>
               <td>{product.description}</td>
 
-              <td>{product.shop}</td>
-              <td>
-                <Link>ShopRite</Link>
-              </td>
               <td>{"MK " + product.price}</td>
               <td>{product.quantity}</td>
               <td>
